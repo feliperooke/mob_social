@@ -19,4 +19,4 @@ Para áreas de 200m x 200m
 ### Passo 3: Conversão de GeoJson para Bounding Box
 Esse passo é necessário devido a especificidade da rede social trabalhada, no caso o Twitter (https://developer.twitter.com/en/docs/tutorials/filtering-tweets-by-location). para essa conversão execute o comando:
 
-        python -m coleta.geojson_to_bbox <geojson_in.json> <bbox_out.csv>
+        python -m coleta.geojson_para_bbox <geojson_in.json> <bbox_out.csv>

@@ -11,7 +11,7 @@ dir_base = os.path.abspath(os.path.dirname(__file__))
 dir_logs = "{}/logs".format(dir_base)
 
 # Caminho do diretorio de dados da aplicacao
-dir_dados = "{}/dados".format(dir_base)
+dir_dados = "{}/data".format(dir_base)
 
 # Caminho da lista de id_users que nao tem tweets geolocalizados
 lista_nogeotagged = "{}/id_users_nogeotagged.csv".format(dir_dados)

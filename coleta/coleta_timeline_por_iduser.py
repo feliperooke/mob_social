@@ -1,6 +1,4 @@
 # recebe chaves do twitter e o id do usuario
-import apaga_listas as apagalistas
-import cria_listas as crialistas
 import gzip
 import helpers.manipulador_de_listas as mani
 import json
@@ -10,7 +8,6 @@ import pandas as pd
 import socket
 import sys
 import tweepy
-import verifica_listas as verificalistas
 import conf
 
 consumer_key = sys.argv[1]
@@ -63,7 +60,7 @@ def get_twitter_timeline(user_id):
         return
 
     # Skip user if it was already collected but crashed
-    if mani.in_lista_processados(conf.lista_erro, user_id):
+    if mani.in_lista(conf.lista_erro, user_id):
         logging.info("User {} - Skipped - in erro list".format(user_id))
         return
 

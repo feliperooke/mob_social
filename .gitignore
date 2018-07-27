@@ -1,2 +1,10 @@
 
 *.pyc
+
+*.lock
+
+*.log
+
+data/user_timeline/
+
+data/id_users*

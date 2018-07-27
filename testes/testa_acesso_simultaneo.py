@@ -1,9 +1,15 @@
-import helpers.manipulador_de_listas as mani
+# https://github.com/benediktschmitt/py-filelock
+
 import sys
+from time import sleep
+from filelock import FileLock
+import conf
 
-valor = sys.argv[1]
 
-arquivo_in = "data/teste.csv"
+lock = FileLock("my_lock")
+with lock:
+    print("This is process {}.".format(sys.argv[1]))
+    sleep(10)
+    print("Bye.")
 
-for i in range(0, 100000):
-    mani.add_lista(arquivo_in, valor)
+print conf.dir_base

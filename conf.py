@@ -21,6 +21,3 @@ lista_erro = "{}/id_users_erro.csv".format(dir_dados)
 
 # Caminho da lista de id_users que tem o perfil restrito
 lista_restrito = "{}/id_users_restrito.csv".format(dir_dados)
-
-# Caminho da lista de id_users que tem o perfil restrito
-lista_processando = "{}/id_users_processando.csv".format(dir_dados)

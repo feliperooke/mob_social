@@ -29,7 +29,7 @@ Informações de chaves do Twitter são necessárias como parâmetros
 
 Exemplo de uso:
 
-        python -m coleta.coleta_timeline_por_iduser XRFKDdnq6Y2m00nMrRyUYstcM dPiVsGK05gPajbLYt5E3d94TBeslvXMK7ZAnpTC3dMj835wOxF 84719405-q0RrudftXH9X2W2AK3Wz6WatmVgYYeTQALN6lClJs NSi33FbLa3UFOJc 16QTCzBw74o9HYra7ufmb4QhzHATqF 145635516
+        python -m coleta.coleta_timeline_por_iduser XRFKDdnq6Y2m00nMrRyUYstcM dPiVsGK05gPajbLYt5E3d94TBeslvXMK7ZAnpTC3dMj835wOxF 84719405-q0RrudftXH9X2W2AK3Wz6WatmVgYYeTQALN6lClJs NSi33FbLa3UFOJc16QTCzBw74o9HYra7ufmb4QhzHATqF 145635516
 
 Os resultados da captura ficam guardados nos seguintes arquivos:
 
@@ -50,4 +50,4 @@ No arquivo **id_users_nogeotagged.csv** ficam armazenados todos os usuários que
 
 No arquivo **id_users_restrito.csv** ficam armazenados todos os usuários cujos perfis são de acesso restrito.
 
-No diretorio **user_timeline** ficam armazenados em 
+No diretorio **user_timeline** ficam armazenados em

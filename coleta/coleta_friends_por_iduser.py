@@ -12,7 +12,7 @@ consumer_secret = sys.argv[2]
 acess_token = sys.argv[3]
 access_token_secret = sys.argv[4]
 id_user = sys.argv[5]
-limit_friends = sys.argv[6]
+limit_friends = int(sys.argv[6])
 
 hostname = socket.gethostname()
 
@@ -77,12 +77,17 @@ def collect_users_friends(user_id):
             # 2 - excedeu o limite de requisicoes a cada 15 min
             c = tweepy.Cursor(api.friends_ids, id=user_id)
             for page in c.pages():
+                logging.info("User {} - Coletando {} friends".format(user_id, len(page)))
                 user_friends.extend(page)
                 # caso exceda o limite de amigos definidos para a coleta pare de coletar
-                if len(user_friends >= limit_friends):
+                if len(user_friends) >= limit_friends:
                     break
 
+            if(len(user_friends) == 0):
+                logging.warning("User {} - Nao tem friends".format(user_id))
+
             coletou = True
+            mani.remove_lista(conf.lista_erro, user_id)
 
         except tweepy.TweepError as e:
 
@@ -103,23 +108,29 @@ def collect_users_friends(user_id):
                         logging.warning("User {} - Error Status: {} - Reason: {} - Error: {}".format(
                             user_id, e.response.status_code, e.response.reason, e.response.text))
 
-                        coletou = True
-
                         mani.remove_lista(conf.lista_erro, user_id)
+                        return
 
         except Exception as e:
             # Se o erro for outro, registra e sai do loop
-            logging.warning(
-                "User {} - Erro Desconhecido: {} - Reason: {} - Error: {}".format(user_id, e.message))
-            coletou = True
+            logging.error("User {} - Erro Desconhecido: {}".format(user_id, e.message))
+            return
 
     # GRAVA FRIENDS
     try:
         # add friends in the file
+        i = 0
         for user_friend_id in user_friends:
             mani.add_lista(output_filename, user_friend_id)
+            i += 1
+            if i >= limit_friends:
+                break
+
+        if(len(user_friends) == 0):
+            mani.add_lista(output_filename, "")
+
     except Exception:
-        logging.warning(
+        logging.error(
             "User {} - Erro ao escrever no arquivo do friends do usuario".format(user_id))
 
     logging.info("User {} - Finish add friends in file".format(user_id))

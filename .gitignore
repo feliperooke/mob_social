@@ -7,4 +7,8 @@
 
 data/user_timeline/
 
+data/user_followers/
+
+data/user_friends/
+
 data/id_users*

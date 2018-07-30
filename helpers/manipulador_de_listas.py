@@ -1,5 +1,5 @@
-import os
 from filelock import FileLock
+import os
 import subprocess
 
 

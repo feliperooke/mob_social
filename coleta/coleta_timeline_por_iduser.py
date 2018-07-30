@@ -110,12 +110,14 @@ def get_twitter_timeline(user_id):
                         coletou = True
 
                         mani.remove_lista(conf.lista_erro, user_id)
+                        return
 
         except Exception as e:
             # Se o erro for outro, registra e sai do loop
-            logging.warning(
+            logging.error(
                 "User {} - Erro Desconhecido: {} - Reason: {} - Error: {}".format(user_id, e.message))
             coletou = True
+            return
 
     # Se foram coletados tweets geolocalizados...
     if user_timeline is not None and len(user_timeline) > 0:
@@ -128,12 +130,12 @@ def get_twitter_timeline(user_id):
                     dump = bytes(json.dumps(user_timeline), "UTF-8")
                 outfile.write(dump)
             except Exception:
-                logging.warning(
+                logging.error(
                     "User {} - Erro ao gerar bytes para escrita no json".format(user_id))
         logging.info("User {} - Finished ({} tweets)".format(user_id, len(user_timeline)))
     else:
         mani.add_lista_lock(conf.lista_nogeotagged, user_id)
-        logging.info("User {} - Terminated - no geotagged tweets".format(user_id))
+        logging.warning("User {} - Terminated - no geotagged tweets".format(user_id))
 
 
 get_twitter_timeline(id_user)

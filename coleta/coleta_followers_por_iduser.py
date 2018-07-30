@@ -20,7 +20,7 @@ hostname = socket.gethostname()
 
 # inicia configuracoes de logging
 if not os.path.exists(conf.dir_logs):
-        os.makedirs(conf.dir_logs)
+    os.makedirs(conf.dir_logs)
 
 logging.basicConfig(filename="{}/collect_users_followers.{}.log".format(conf.dir_logs, hostname),
                     filemode="a", level=logging.INFO, format="[ %(asctime)s ] [%(levelname)s] %(message)s")
@@ -39,7 +39,7 @@ def collect_users_followers(user_id):
     dir_followers = "{}/user_followers".format(conf.dir_dados)
 
     if not os.path.exists(dir_followers):
-            os.makedirs(dir_followers)
+        os.makedirs(dir_followers)
 
     output_filename = "{}/{}.json.gz".format(dir_followers, user_id)
 
@@ -75,7 +75,6 @@ def collect_users_followers(user_id):
 
     # users_followers_collected_set = pd.read_csv(output_filename)
 
-
     # with open(users_friends_collected_output, 'rb') as csv_file:
     #    reader = csv.reader(csv_file)
     #    for item in reader:
@@ -85,30 +84,27 @@ def collect_users_followers(user_id):
     logging.info("User {} - Finaliza leitura da lista de coletados".format(user_id))
 
     # Se existe o arquivo, recupera
-    #if os.path.exists(users_friends_collected_output):
+    # if os.path.exists(users_friends_collected_output):
     #    f = gzip.open(users_friends_collected_output,'rb')
     #    users_friends_collected_set = pickle.load(f)
     #    f.close()
 
-
-    #Skip user if it was already followers collected
+    # Skip user if it was already followers collected
     if user_id in users_followers_collected_set.values:
         logging.info("User {} - Already had followers collected".format(user_id))
 
     else:
 
-
         logging.info("User {} - Inicia leitura da lista de adjacencia/digrafo".format(user_id))
 
-        #If graph exists, recovery
+        # If graph exists, recovery
         if os.path.exists(graph_users_output):
             graph_users = nx.read_adjlist(graph_users_output, create_using=nx.DiGraph())
             #graph_users = nx.read_gpickle(graph_users_output)
 
         logging.info("User {} - Finaliza leitura da lista de adjacencia/digrafo".format(user_id))
 
-
-        #if not in graph, add
+        # if not in graph, add
         if user_id not in graph_users:
             logging.info("User {} - Usuario nao esta no grafo".format(user_id))
             graph_users.add_node(user_id)
@@ -128,7 +124,8 @@ def collect_users_followers(user_id):
             rates = api.rate_limit_status()
             rate_limit_reset = rates["resources"]["followers"]["/followers/ids"]["reset"]
             to_sleep = max(rate_limit_reset - int(time.time()), 0)
-            logging.warning("User {} - Rate limit exceeded, sleeping {} seconds".format(user_id, to_sleep+1))
+            logging.warning(
+                "User {} - Rate limit exceeded, sleeping {} seconds".format(user_id, to_sleep+1))
             time.sleep(to_sleep+1)
         except tweepy.TweepError, error:
             logging.warning("User {} - API error code: {}".format(user_id, error.message))
@@ -140,43 +137,42 @@ def collect_users_followers(user_id):
 
         logging.info("User {} - Starting add followers in graph".format(user_id))
 
-        #add followers in the graph
+        # add followers in the graph
         for user_follower_id in user_followers:
-            #if is not in the graph
+            # if is not in the graph
             if user_follower_id not in graph_users:
-                #add
+                # add
                 graph_users.add_node(user_follower_id)
-            #add edge between friend ----> user
+            # add edge between friend ----> user
             graph_users.add_edge(user_follower_id, user_id)
 
         logging.info("User {} - Finish add followers in graph".format(user_id))
 
-        #save all and finish
+        # save all and finish
         # Output result only if there was no error
         if user_followers is not None and len(user_followers) > 0:
 
             logging.info("User {} - Adiciona na lista de visitados".format(user_id))
-            #add user in the visited set
+            # add user in the visited set
             users_followers_collected_set.loc[len(users_followers_collected_set)] = user_id
 
-            #save the collected set
-            #with gzip.open(users_friends_collected_output,'wb') as outfile:
+            # save the collected set
+            # with gzip.open(users_friends_collected_output,'wb') as outfile:
             #    pickle.dump(users_friends_collected_set,outfile)
             #    outfile.close()
 
             logging.info("User {} - Inicia gravacao da lista de visitados".format(user_id))
-            #save the collected set
-            #with open(users_friends_collected_output, 'wb') as csv_file:
+            # save the collected set
+            # with open(users_friends_collected_output, 'wb') as csv_file:
             #    writer = csv.writer(csv_file)
             #    for value in users_friends_collected_set:
             #        writer.writerow(value)
 
             users_followers_collected_set.to_csv(users_followers_collected_output, index=False)
 
-
             logging.info("User {} - Finaliza gravacao da lista de visitados".format(user_id))
 
-            #save the graph
+            # save the graph
             logging.info("User {} - Inicia gravacao do Grafo".format(user_id))
             with open(graph_users_output, 'wb') as graph_out:
                 nx.write_adjlist(graph_users, graph_out)
@@ -195,11 +191,11 @@ def collect_users_followers(user_id):
 
         i = 0
         for user_follower in user_followers:
-             if i >= 500 :
-                 break
-             else:
-                 get_twitter_timeline(user_follower)
-                 i = i + 1
+            if i >= 500:
+                break
+            else:
+                get_twitter_timeline(user_follower)
+                i = i + 1
 
     del users_followers_collected_set
     del users_followers_collected_output
@@ -215,7 +211,7 @@ def get_twitter_timeline(user_id):
     dir_timelines = "{}/user_timeline".format(conf.dir_dados)
 
     if not os.path.exists(dir_timelines):
-            os.makedirs(dir_timelines)
+        os.makedirs(dir_timelines)
 
     output_filename = "{}/{}.json.gz".format(dir_timelines, user_id)
 
@@ -289,7 +285,8 @@ def get_twitter_timeline(user_id):
 
         except Exception as e:
             # Se o erro for outro, registra e sai do loop
-            logging.warning("User {} - Erro Desconhecido: {} - Reason: {} - Error: {}".format(user_id, e.message))
+            logging.warning(
+                "User {} - Erro Desconhecido: {} - Reason: {} - Error: {}".format(user_id, e.message))
             coletou = True
 
     # Se foram coletados tweets geolocalizados...
@@ -303,7 +300,8 @@ def get_twitter_timeline(user_id):
                     dump = bytes(json.dumps(user_timeline), "UTF-8")
                 outfile.write(dump)
             except Exception:
-                logging.warning("User {} - Erro ao gerar bytes para escrita no json".format(user_id))
+                logging.warning(
+                    "User {} - Erro ao gerar bytes para escrita no json".format(user_id))
         logging.info("User {} - Finished ({} tweets)".format(user_id, len(user_timeline)))
     else:
         mani.add_lista_lock(conf.lista_nogeotagged, user_id)

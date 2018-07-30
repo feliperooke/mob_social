@@ -1,14 +1,13 @@
 # recebe chaves do twitter e o id do usuario
+import conf
 import gzip
 import helpers.manipulador_de_listas as mani
 import json
 import logging
 import os
-import pandas as pd
 import socket
 import sys
 import tweepy
-import conf
 
 consumer_key = sys.argv[1]
 consumer_secret = sys.argv[2]
@@ -20,7 +19,7 @@ hostname = socket.gethostname()
 
 # inicia configuracoes de logging
 if not os.path.exists(conf.dir_logs):
-        os.makedirs(conf.dir_logs)
+    os.makedirs(conf.dir_logs)
 
 logging.basicConfig(filename="{}/collect_users_timelines.{}.log".format(conf.dir_logs, hostname),
                     filemode="a", level=logging.INFO, format="[ %(asctime)s ] [%(levelname)s] %(message)s")
@@ -40,7 +39,7 @@ def get_twitter_timeline(user_id):
     dir_timelines = "{}/user_timeline".format(conf.dir_dados)
 
     if not os.path.exists(dir_timelines):
-            os.makedirs(dir_timelines)
+        os.makedirs(dir_timelines)
 
     output_filename = "{}/{}.json.gz".format(dir_timelines, user_id)
 
@@ -114,7 +113,8 @@ def get_twitter_timeline(user_id):
 
         except Exception as e:
             # Se o erro for outro, registra e sai do loop
-            logging.warning("User {} - Erro Desconhecido: {} - Reason: {} - Error: {}".format(user_id, e.message))
+            logging.warning(
+                "User {} - Erro Desconhecido: {} - Reason: {} - Error: {}".format(user_id, e.message))
             coletou = True
 
     # Se foram coletados tweets geolocalizados...
@@ -128,7 +128,8 @@ def get_twitter_timeline(user_id):
                     dump = bytes(json.dumps(user_timeline), "UTF-8")
                 outfile.write(dump)
             except Exception:
-                logging.warning("User {} - Erro ao gerar bytes para escrita no json".format(user_id))
+                logging.warning(
+                    "User {} - Erro ao gerar bytes para escrita no json".format(user_id))
         logging.info("User {} - Finished ({} tweets)".format(user_id, len(user_timeline)))
     else:
         mani.add_lista_lock(conf.lista_nogeotagged, user_id)

@@ -1,4 +1,4 @@
-# recebe chaves do twitter e o id do usuario e limite de followers para coleta
+# recebe chaves do twitter e o id do usuario e limite de friends para coleta
 import conf
 import helpers.manipulador_de_listas as mani
 import logging
@@ -12,7 +12,7 @@ consumer_secret = sys.argv[2]
 acess_token = sys.argv[3]
 access_token_secret = sys.argv[4]
 id_user = sys.argv[5]
-limit_followers = sys.argv[6]
+limit_friends = sys.argv[6]
 
 hostname = socket.gethostname()
 
@@ -20,7 +20,7 @@ hostname = socket.gethostname()
 if not os.path.exists(conf.dir_logs):
     os.makedirs(conf.dir_logs)
 
-logging.basicConfig(filename="{}/collect_users_followers.{}.log".format(conf.dir_logs, hostname),
+logging.basicConfig(filename="{}/collect_users_friends.{}.log".format(conf.dir_logs, hostname),
                     filemode="a", level=logging.INFO, format="[ %(asctime)s ] [%(levelname)s] %(message)s")
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -30,16 +30,16 @@ api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, 
 logging.info("Use api key - {}".format(api.auth.consumer_key))
 
 
-def collect_users_followers(user_id):
+def collect_users_friends(user_id):
 
     global api
 
-    dir_followers = "{}/user_followers".format(conf.dir_dados)
+    dir_friends = "{}/user_friends".format(conf.dir_dados)
 
-    if not os.path.exists(dir_followers):
-        os.makedirs(dir_followers)
+    if not os.path.exists(dir_friends):
+        os.makedirs(dir_friends)
 
-    output_filename = "{}/{}.csv".format(dir_followers, user_id)
+    output_filename = "{}/{}.csv".format(dir_friends, user_id)
 
     # Skip user if it was already collected
     if os.path.exists(output_filename):
@@ -62,12 +62,12 @@ def collect_users_followers(user_id):
         return
 
     # Collect all friends of the user
-    logging.info("User {} - Starting collecting followers".format(user_id))
+    logging.info("User {} - Starting collecting friends".format(user_id))
 
     # Add na lista de erros e quando a coleta finalizar retira
     mani.add_lista_lock(conf.lista_erro, user_id)
 
-    user_followers = []
+    user_friends = []
 
     coletou = False
     while not coletou:
@@ -75,11 +75,11 @@ def collect_users_followers(user_id):
             # tenta recuperar a pagina, se nao conseguir 2 coisas podem acontecer
             # 1 - excedeu o limite de paginas
             # 2 - excedeu o limite de requisicoes a cada 15 min
-            c = tweepy.Cursor(api.followers_ids, id=user_id)
+            c = tweepy.Cursor(api.friends_ids, id=user_id)
             for page in c.pages():
-                user_followers.extend(page)
-                # caso exceda o limite de seguidores definidos para a coleta pare de coletar
-                if len(user_followers >= limit_followers):
+                user_friends.extend(page)
+                # caso exceda o limite de amigos definidos para a coleta pare de coletar
+                if len(user_friends >= limit_friends):
                     break
 
             coletou = True
@@ -91,7 +91,7 @@ def collect_users_followers(user_id):
 
                     # Se excedeu o numero de requisicoes
                     if e.response.status_code == 429:
-                        user_followers = []
+                        user_friends = []
                         logging.warning("User {} - Error Status: {} - Reason: {} - Error: {}".format(
                             user_id, e.response.status_code, e.response.reason, e.response.text))
                         logging.warning("User {} - Coletando novamente".format(user_id))
@@ -113,18 +113,18 @@ def collect_users_followers(user_id):
                 "User {} - Erro Desconhecido: {} - Reason: {} - Error: {}".format(user_id, e.message))
             coletou = True
 
-    # GRAVA FOLLOWERS
+    # GRAVA FRIENDS
     try:
-        # add followers in the file
-        for user_follower_id in user_followers:
-            mani.add_lista(output_filename, user_follower_id)
+        # add friends in the file
+        for user_friend_id in user_friends:
+            mani.add_lista(output_filename, user_friend_id)
     except Exception:
         logging.warning(
-            "User {} - Erro ao escrever no arquivo do followers do usuario".format(user_id))
+            "User {} - Erro ao escrever no arquivo do friends do usuario".format(user_id))
 
-    logging.info("User {} - Finish add followers in file".format(user_id))
+    logging.info("User {} - Finish add friends in file".format(user_id))
 
-    del user_followers
+    del user_friends
 
 
-collect_users_followers(id_user)
+collect_users_friends(id_user)

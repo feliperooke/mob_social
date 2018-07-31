@@ -21,3 +21,15 @@ lista_erro = "{}/id_users_erro.csv".format(dir_dados)
 
 # Caminho da lista de id_users que tem o perfil restrito
 lista_restrito = "{}/id_users_restrito.csv".format(dir_dados)
+
+# Caminho da lista de id_users que tem as timelines dos amigos coletadas
+lista_friends_timelines = "{}/id_users_timeline_friends_collecteds.csv".format(dir_dados)
+
+# Caminho da lista de id_users que tem as timelines dos amigos coletadas
+lista_friends_timelines_error = "{}/id_users_timeline_friends_collecteds_error.csv".format(dir_dados)
+
+# Caminho da lista de id_users que tem as timelines dos followers coletadas com erro
+lista_followers_timelines = "{}/id_users_timeline_followers_collecteds.csv".format(dir_dados)
+
+# Caminho da lista de id_users que tem as timelines dos followers coletadas com erro
+lista_followers_timelines_error = "{}/id_users_timeline_followers_collecteds_error.csv".format(dir_dados)

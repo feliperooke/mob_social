@@ -15,19 +15,27 @@ def add_lista(arquivo_in, linha):
     arquivo.close()
 
 
-def add_lista_lock(arquivo_in, linha):
+def add_lista_lock(arquivo_in, linha, file_lock="add_lista.lock"):
 
-    lock = FileLock("add_lista.lock")
+    lock = FileLock(file_lock)
     with lock:
         add_lista(arquivo_in, linha)
 
 
-def add_lista_if_not_in_lock(arquivo_in, linha):
+def add_lista_if_not_in_lock(arquivo_in, linha, file_lock="add_lista.lock"):
 
-    lock = FileLock("add_lista.lock")
+    lock = FileLock(file_lock)
     with lock:
         if not in_lista(arquivo_in, linha):
             add_lista(arquivo_in, linha)
+
+
+def in_lista_lock(arquivo_in, linha, file_lock="add_lista.lock"):
+    lock = FileLock(file_lock)
+    na_lista = False
+    with lock:
+        na_lista = in_lista(arquivo_in, linha)
+    return na_lista
 
 
 def in_lista(arquivo_in, linha):
@@ -52,8 +60,8 @@ def in_lista(arquivo_in, linha):
     return existe
 
 
-def remove_lista_lock(arquivo, linha):
-    lock = FileLock("add_lista.lock")
+def remove_lista_lock(arquivo, linha, file_lock="add_lista.lock"):
+    lock = FileLock(file_lock)
     with lock:
         remove_lista(arquivo, linha)
 

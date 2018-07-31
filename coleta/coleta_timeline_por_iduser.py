@@ -115,7 +115,7 @@ def get_twitter_timeline(user_id):
         except Exception as e:
             # Se o erro for outro, registra e sai do loop
             logging.error(
-                "User {} - Erro Desconhecido: {} - Reason: {} - Error: {}".format(user_id, e.message))
+                "User {} - Erro Desconhecido: {}".format(user_id, e.message))
             coletou = True
             return
 

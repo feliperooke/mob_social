@@ -12,3 +12,5 @@ data/user_followers/
 data/user_friends/
 
 data/id_users*
+
+lock/

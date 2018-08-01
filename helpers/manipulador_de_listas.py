@@ -15,14 +15,22 @@ def add_lista(arquivo_in, linha):
     arquivo.close()
 
 
-def add_lista_lock(arquivo_in, linha, file_lock="add_lista.lock"):
+def add_lista_lock(arquivo_in, linha, file_lock="lock/add_lista.lock"):
+
+    dir_file_lock = os.path.abspath(os.path.dirname(file_lock))
+    if not os.path.exists(dir_file_lock):
+        os.makedirs(dir_file_lock)
 
     lock = FileLock(file_lock)
     with lock:
         add_lista(arquivo_in, linha)
 
 
-def add_lista_if_not_in_lock(arquivo_in, linha, file_lock="add_lista.lock"):
+def add_lista_if_not_in_lock(arquivo_in, linha, file_lock="lock/add_lista.lock"):
+
+    dir_file_lock = os.path.abspath(os.path.dirname(file_lock))
+    if not os.path.exists(dir_file_lock):
+        os.makedirs(dir_file_lock)
 
     lock = FileLock(file_lock)
     with lock:
@@ -30,7 +38,12 @@ def add_lista_if_not_in_lock(arquivo_in, linha, file_lock="add_lista.lock"):
             add_lista(arquivo_in, linha)
 
 
-def in_lista_lock(arquivo_in, linha, file_lock="add_lista.lock"):
+def in_lista_lock(arquivo_in, linha, file_lock="lock/add_lista.lock"):
+
+    dir_file_lock = os.path.abspath(os.path.dirname(file_lock))
+    if not os.path.exists(dir_file_lock):
+        os.makedirs(dir_file_lock)
+
     lock = FileLock(file_lock)
     na_lista = False
     with lock:
@@ -60,7 +73,12 @@ def in_lista(arquivo_in, linha):
     return existe
 
 
-def remove_lista_lock(arquivo, linha, file_lock="add_lista.lock"):
+def remove_lista_lock(arquivo, linha, file_lock="lock/add_lista.lock"):
+
+    dir_file_lock = os.path.abspath(os.path.dirname(file_lock))
+    if not os.path.exists(dir_file_lock):
+        os.makedirs(dir_file_lock)
+
     lock = FileLock(file_lock)
     with lock:
         remove_lista(arquivo, linha)

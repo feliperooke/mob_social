@@ -57,7 +57,7 @@ def collect_users_friends(user_id):
         return
 
     # Skip user if it was already collected but crashed
-    if mani.in_lista(conf.lista_erro, user_id):
+    if mani.in_lista(conf.lista_friends_erro, user_id):
         logging.info("User {} - Skipped - in erro list".format(user_id))
         return
 
@@ -65,7 +65,7 @@ def collect_users_friends(user_id):
     logging.info("User {} - Starting collecting friends".format(user_id))
 
     # Add na lista de erros e quando a coleta finalizar retira
-    mani.add_lista_lock(conf.lista_erro, user_id)
+    mani.add_lista_lock(conf.lista_friends_erro, user_id)
 
     user_friends = []
 
@@ -87,7 +87,7 @@ def collect_users_friends(user_id):
                 logging.warning("User {} - Nao tem friends".format(user_id))
 
             coletou = True
-            mani.remove_lista(conf.lista_erro, user_id)
+            mani.remove_lista(conf.lista_friends_erro, user_id)
 
         except tweepy.TweepError as e:
 
@@ -108,7 +108,7 @@ def collect_users_friends(user_id):
                         logging.warning("User {} - Error Status: {} - Reason: {} - Error: {}".format(
                             user_id, e.response.status_code, e.response.reason, e.response.text))
 
-                        mani.remove_lista(conf.lista_erro, user_id)
+                        mani.remove_lista(conf.lista_friends_erro, user_id)
                         return
 
         except Exception as e:

@@ -19,6 +19,12 @@ lista_nogeotagged = "{}/id_users_nogeotagged.csv".format(dir_dados)
 # Caminho da lista de id_users que deram erro ao coletar
 lista_erro = "{}/id_users_erro.csv".format(dir_dados)
 
+# Caminho da lista de id_users que deram erro ao coletar
+lista_friends_erro = "{}/id_users_friends_erro.csv".format(dir_dados)
+
+# Caminho da lista de id_users que deram erro ao coletar
+lista_followers_erro = "{}/id_users_followers_erro.csv".format(dir_dados)
+
 # Caminho da lista de id_users que tem o perfil restrito
 lista_restrito = "{}/id_users_restrito.csv".format(dir_dados)
 

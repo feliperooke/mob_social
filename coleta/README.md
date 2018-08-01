@@ -23,7 +23,7 @@ Esse passo é necessário devido a especificidade da rede social trabalhada, no 
 
 
 ### Passo X: Coleta de Timeline de Usuário Específico
-Informações de chaves do Twitter são necessárias como parâmetros
+Informações de chaves do Twitter e id do usuário são necessários como parâmetros
 
         python -m coleta.coleta_timeline_por_iduser <consumer_key> <consumer_secret> <acess_token> <access_token_secret> <id_user>
 
@@ -50,4 +50,60 @@ No arquivo **id_users_nogeotagged.csv** ficam armazenados todos os usuários que
 
 No arquivo **id_users_restrito.csv** ficam armazenados todos os usuários cujos perfis são de acesso restrito.
 
-No diretorio **user_timeline** ficam armazenados em
+No diretorio **user_timeline** ficam armazenados em arquivos <id_user>.json.gz toda a timeline de determinado usuário.
+
+
+### Passo Y: Coleta de Friends e Followers
+
+Informações de chaves do Twitter, id do usuário e limite da quantidade de amigos a serem coletados são necessários como parâmetros
+```bash
+        # Para coleta de Friends
+        python -m coleta.coleta_friends_por_iduser <consumer_key> <consumer_secret> <acess_token> <access_token_secret> <id_user> <limite_de_amigos>
+
+        # Para coleta de Followers
+        python -m coleta.coleta_followers_por_iduser <consumer_key> <consumer_secret> <acess_token> <access_token_secret> <id_user> <limite_de_seguidores>
+```
+Exemplo de uso:
+```bash    
+        # Friends
+        python -m coleta.coleta_friends_por_iduser XRFKDdnq6Y2m00nMrRyUYstcM dPiVsGK05gPajbLYt5E3d94TBeslvXMK7ZAnpTC3dMj835wOxF 84719405-q0RrudftXH9X2W2AK3Wz6WatmVgYYeTQALN6lClJs NSi33FbLa3UFOJc16QTCzBw74o9HYra7ufmb4QhzHATqF 145635516 500
+        # Followers
+        python -m coleta.coleta_folowers_por_iduser XRFKDdnq6Y2m00nMrRyUYstcM dPiVsGK05gPajbLYt5E3d94TBeslvXMK7ZAnpTC3dMj835wOxF 84719405-q0RrudftXH9X2W2AK3Wz6WatmVgYYeTQALN6lClJs NSi33FbLa3UFOJc16QTCzBw74o9HYra7ufmb4QhzHATqF 145635516 500
+```
+Os resultados da captura ficam guardados nos seguintes arquivos:
+```bash
+├── data
+│   ├── id_users_friends_erro.csv
+│   ├── id_users_followers_erro.csv
+│   ├── id_users_restrito.csv
+│   ├── user_friends
+│   │   └── <id_user>.csv
+│   └── user_followers
+│       └── <id_user>.csv
+└── logs
+    ├── collect_users_friends.<host>.log
+    └── collect_users_followers.<host>.log
+```
+No arquivo **id_users_erro.csv** ficam armazenados todos os usuários que apresentaram algum erro não conhecido no processo de coleta.
+
+No arquivo **id_users_restrito.csv** ficam armazenados todos os usuários cujos perfis são de acesso restrito.
+
+No diretorio **user_friends** ficam armazenados em arquivos <id_user>.csv todos os amigos de determinado usuário, se limitando ao parâmetro <limite_de_amigos>.
+
+No diretorio **user_followers** ficam armazenados em arquivos <id_user>.csv todos os amigos de determinado usuário, se limitando ao parâmetro <limite_de_seguidores>.
+
+### Passo Z: Coleta de Timeline de Friends e Followers
+O script **coleta_friends_timeline.py** e **coleta_folowers_timeline.py** quando executados, fazem uma varredura das pastas **user_friends** e **user_followers** respectivamente, percorrendo os arquivos com os ids de amigos e seguidores coletando suas timelines. Todos os usuários cujos amigos ou seguidores já foram coletados ficam armazenados em uma lista ao final.
+
+Os resultados da captura ficam guardados nos seguintes arquivos:
+```bash
+├── data
+│   ├── id_users_timeline_friends_collecteds_error.csv
+│   ├── id_users_timeline_followers_collecteds_error.csv
+│   ├── id_users_timeline_friends_collecteds.csv
+│   └── id_users_timeline_followers_collecteds.csv
+│       
+└── logs
+    ├── collect_friends_timelines.<host>.log
+    └── collect_followers_timelines.<host>.log
+```

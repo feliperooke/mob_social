@@ -3,8 +3,8 @@
 # verifica antes de acessar se esta na lista de coletados ou se esta na lista de erros
 # se esta, sai fora
 # senao,adiciona na lista de erros de coleta
-# e inicia a coleta da timeline dos amigos
-# assim que terminar de coletar os amigos, retira da lista de erros
+# e inicia a coleta da timeline dos seguidores
+# assim que terminar de coletar os seguidores, retira da lista de erros
 
 # recebe chaves do twitter
 import sys
@@ -28,7 +28,7 @@ hostname = socket.gethostname()
 if not os.path.exists(conf.dir_logs):
     os.makedirs(conf.dir_logs)
 
-logging.basicConfig(filename="{}/collect_friends_timelines.{}.log".format(conf.dir_logs, hostname),
+logging.basicConfig(filename="{}/collect_followers_timelines.{}.log".format(conf.dir_logs, hostname),
                     filemode="a", level=logging.INFO, format="[ %(asctime)s ] [%(levelname)s] %(message)s")
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -38,46 +38,46 @@ api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, 
 logging.info("Use api key - {}".format(api.auth.consumer_key))
 
 
-def coleta_friends_timelines():
+def coleta_followers_timelines():
 
     global api
 
-    dir_friends = "{}/user_friends".format(conf.dir_dados)
-    lock_file = "lock/friends_timelines.lock"
+    dir_followers = "{}/user_followers".format(conf.dir_dados)
+    lock_file = "lock/followers_timelines.lock"
 
     # verifica se existe a pasta
-    if not os.path.exists(dir_friends):
+    if not os.path.exists(dir_followers):
         logging.warning("Nao existe a pasta de coletados - Return")
         return
 
-    # entra na pasta user_friends e lista todos os arquivos csv
-    _, _, users_coletados = walk(dir_friends).next()
+    # entra na pasta user_followers e lista todos os arquivos csv
+    _, _, users_coletados = walk(dir_followers).next()
 
     # pega apenas os ids
     users_coletados = map(lambda x: str.replace(x, ".csv", ""), users_coletados)
 
-    # percorre um a um verificando se seus amigos ja foram coletados
+    # percorre um a um verificando se seus seguidores ja foram coletados
     for id_user in users_coletados:
 
         # verifica antes de acessar se esta na lista de coletados ou se esta na lista de erros
         # se esta, sai fora
-        if mani.in_lista_lock(conf.lista_friends_timelines_error, id_user, lock_file):
-            logging.warning("User {} - timelines de friends com erro ou em processo de coleta".format(id_user))
+        if mani.in_lista_lock(conf.lista_followers_timelines_error, id_user, lock_file):
+            logging.warning("User {} - timelines de followers com erro ou em processo de coleta".format(id_user))
             return
 
-        if mani.in_lista_lock(conf.lista_friends_timelines, id_user, lock_file):
-            logging.warning("User {} - timelines de friends ja coletadas".format(id_user))
+        if mani.in_lista_lock(conf.lista_followers_timelines, id_user, lock_file):
+            logging.warning("User {} - timelines de followers ja coletadas".format(id_user))
             return
 
-        logging.info("User {} - Iniciando coleta das timelines friends".format(id_user))
+        logging.info("User {} - Iniciando coleta das timelines followers".format(id_user))
 
         # senao,adiciona na lista de erros de coleta
-        mani.add_lista_lock(conf.lista_friends_timelines_error, id_user, lock_file)
+        mani.add_lista_lock(conf.lista_followers_timelines_error, id_user, lock_file)
 
-        # e inicia a coleta da timeline dos amigos
-        # abre arquivo com ids de amigos
+        # e inicia a coleta da timeline dos seguidores
+        # abre arquivo com ids de seguidores
         # percorre fazendo chamada ao script de coleta de timeline
-        file_id_user = "{}/{}.csv".format(dir_friends, id_user)
+        file_id_user = "{}/{}.csv".format(dir_followers, id_user)
         pasta_pai = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
         try:
             arquivo = open(file_id_user, "r")
@@ -93,12 +93,12 @@ def coleta_friends_timelines():
         except IOError as e:
             logging.error("User {} - Erro Desconhecido: {}".format(id_user, e.message))
 
-        # assim que terminar de coletar os amigos, retira da lista de erros
-        mani.remove_lista_lock(conf.lista_friends_timelines_error, id_user, lock_file)
+        # assim que terminar de coletar os seguidores, retira da lista de erros
+        mani.remove_lista_lock(conf.lista_followers_timelines_error, id_user, lock_file)
         # e adiciona na lista de users_coletados
-        mani.add_lista_lock(conf.lista_friends_timelines, id_user, lock_file)
+        mani.add_lista_lock(conf.lista_followers_timelines, id_user, lock_file)
 
-        logging.info("User {} - Coleta das timelines friends finalizada".format(id_user))
+        logging.info("User {} - Coleta das timelines followers finalizada".format(id_user))
 
 
-coleta_friends_timelines()
+coleta_followers_timelines()

@@ -2,13 +2,14 @@
 # faz um loop para coletar todas as ocorrencias de tweets geolocalizados
 # assim que achar, coleta timeline do user, friends e followers de acordo com o limite especificado
 # e adiciona em uma lista o id_bbox, id_user coletado
-import sys
+
 import conf
 import helpers.manipulador_de_listas as mani
 import logging
 import os
 import socket
 import subprocess
+import sys
 import tweepy
 
 consumer_key = sys.argv[1]
@@ -50,7 +51,8 @@ class CustomStreamListener(tweepy.StreamListener):
                                                                                                           consumer_secret,
                                                                                                           acess_token,
                                                                                                           access_token_secret,
-                                                                                                          status.user.id)], shell=True)
+                                                                                                          status.user.id
+                                                                                                          )], shell=True)
             # coleta friends
             subprocess.call(["cd {0}  && python -m coleta.coleta_friends_por_iduser {1} {2} {3} {4} {5} {6} \
                               & python -m coleta.coleta_followers_por_iduser {1} {2} {3} {4} {5} {6}".format(pasta_pai,
@@ -59,7 +61,8 @@ class CustomStreamListener(tweepy.StreamListener):
                                                                                                              acess_token,
                                                                                                              access_token_secret,
                                                                                                              status.user.id,
-                                                                                                             limite)], shell=True)
+                                                                                                             limite
+                                                                                                             )], shell=True)
             # add id_bbox e id_user na lista
             try:
                 mani.add_lista_if_not_in_lock("{}/id_users_by_bbox/{}/bbox_id_users.csv".format(conf.dir_dados, id_bbox),

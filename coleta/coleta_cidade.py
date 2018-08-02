@@ -37,16 +37,16 @@ for _, line_bbox in df_bbox.iterrows():
 
     logging.info("Executando coleta do bbox: {} utilizando a chave: {}".format(
         int(line_bbox.id_bbox), contador))
-    subprocess.call(["cd {}  && python -m coleta.coleta_bbox \
-                     {} {} {} {} {} {} {} {} {} {} &".format(pasta_pai,
-                                                             df_twitter.iloc[contador].consumer_key,
-                                                             df_twitter.iloc[contador].consumer_secret,
-                                                             df_twitter.iloc[contador].acess_token,
-                                                             df_twitter.iloc[contador].access_token_secret,
-                                                             int(line_bbox.id_bbox),
-                                                             line_bbox.sw_lon,
-                                                             line_bbox.sw_lat,
-                                                             line_bbox.ne_lon,
-                                                             line_bbox.ne_lat,
-                                                             conf.limite)], shell=True)
+    subprocess.call(["cd {}  && { nohup python -m coleta.coleta_bbox \
+                     {} {} {} {} {} {} {} {} {} {} & } &".format(pasta_pai,
+                                                                 df_twitter.iloc[contador].consumer_key,
+                                                                 df_twitter.iloc[contador].consumer_secret,
+                                                                 df_twitter.iloc[contador].acess_token,
+                                                                 df_twitter.iloc[contador].access_token_secret,
+                                                                 int(line_bbox.id_bbox),
+                                                                 line_bbox.sw_lon,
+                                                                 line_bbox.sw_lat,
+                                                                 line_bbox.ne_lon,
+                                                                 line_bbox.ne_lat,
+                                                                 conf.limite)], shell=True)
     contador += 1

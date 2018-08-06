@@ -22,6 +22,23 @@ Esse passo é necessário devido a especificidade da rede social trabalhada, no 
         python -m coleta.geojson_para_bbox <geojson_in.json> <bbox_out.csv>
 
 
+### Passo 4: Coleta de Timelines da Cidade
+Nesse passo o arquivo **coleta_cidade.py** é chamado. Para ele são passados como parâmetros um arquivo contendo chaves do twitter e o arquivo gerado no passo 3. Abaixo segue o comando a ser executado:
+
+        python -m coleta.coleta_cidade <file_keys_twitter>
+        
+Exemplo de uso:
+
+        python -m coleta.coleta_cidade /<caminho_absoluto>/data/keys_twitter.csv /<caminho_absoluto>/data/london_bbox.csv
+
+O script **coleta_cidade.py** dispara um processo para cada bbox presente no arquivo de entrada, esses processos executam o script **coleta_bbox.py** com as informações do bbox e chaves correntes. O script **coleta_bbox.py** por sua vez, faz chamadas ao **passo X** e ao **passo Y**.
+
+### Passo 5: Coleta de Timelines de Friends e Followers da Cidade
+Nesse passo o arquivo **coleta_followers_and_friends_cidade.py** é chamado. Para ele é passado como parâmetro um arquivo contendo as chaves do twitter. Esse script é responsável por executar o **passo Z**. Abaixo segue o comando a ser executado:
+
+        python -m coleta.coleta_timeline_por_iduser <consumer_key> <consumer_secret> <acess_token> <access_token_secret> <id_user>
+
+
 ### Passo X: Coleta de Timeline de Usuário Específico
 Informações de chaves do Twitter e id do usuário são necessários como parâmetros
 

@@ -11,6 +11,10 @@ data/user_followers/
 
 data/user_friends/
 
+data/users_timeline_cleaned/
+
 data/id_users*
+
+data/all_geo_time_location.csv
 
 lock/

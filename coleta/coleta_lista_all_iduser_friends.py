@@ -32,6 +32,8 @@ def coleta_all_id_friends_timelines():
 
     all_userid_friends = "{}/all_idusers_friends_v2.csv".format(conf.dir_dados)
 
+    print all_userid_friends
+
     df_twitter = pd.read_csv(file_keys_twitter)
 
     qt_lines_twitter = df_twitter.shape[0]
@@ -64,7 +66,7 @@ def coleta_all_id_friends_timelines():
             logging.info("Executando comando")
             # faz a chamada a coleta e enquanto nao coletar a qtd total nao volta para o loop
             # subprocess.call([comando], shell=True)
-            print comando
+            # print comando
             logging.info("Comando finalizado")
 
 

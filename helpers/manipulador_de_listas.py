@@ -86,3 +86,20 @@ def remove_lista_lock(arquivo, linha, file_lock="lock/add_lista.lock"):
 
 def remove_lista(arquivo, linha):
     subprocess.call(["sed -i '/{}/d' {}".format(linha, arquivo)], shell=True)
+
+
+def first_line(arquivo_in):
+
+    dir_arquivo_in = os.path.abspath(os.path.dirname(arquivo_in))
+
+    if not os.path.exists(dir_arquivo_in):
+        return
+
+    arquivo = open(arquivo_in, "r")
+    linha = arquivo.readline().rstrip()
+    arquivo.close()
+    return linha
+
+
+def lista_is_empty(arquivo_in):
+    return os.stat(arquivo_in).st_size == 0

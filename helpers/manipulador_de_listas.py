@@ -95,9 +95,13 @@ def first_line(arquivo_in):
     if not os.path.exists(dir_arquivo_in):
         return
 
-    arquivo = open(arquivo_in, "r")
-    linha = arquivo.readline().rstrip()
-    arquivo.close()
+    with open(arquivo_in, "r") as f:
+        for linha in f:
+            linha = linha.rstrip()
+            if(linha != ""):
+                print(linha)
+                break
+        print(linha)
     return linha
 
 

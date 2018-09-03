@@ -15,11 +15,6 @@ import os
 from os import walk
 import socket
 
-consumer_key = sys.argv[1]
-consumer_secret = sys.argv[2]
-acess_token = sys.argv[3]
-access_token_secret = sys.argv[4]
-
 hostname = socket.gethostname()
 
 # inicia configuracoes de logging

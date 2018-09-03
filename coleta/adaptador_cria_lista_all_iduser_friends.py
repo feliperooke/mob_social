@@ -52,7 +52,8 @@ def processa_all_id_friends_timelines():
             for line in arquivo.readlines():
                 id_user_timeline = line.rstrip()
                 # add os ids em um listao
-                mani.add_lista(all_userid_friends, id_user_timeline)
+                if not mani.in_lista(all_userid_friends, id_user_timeline):
+                    mani.add_lista(all_userid_friends, id_user_timeline)
 
         except IOError as e:
             logging.error("User {} - Erro Desconhecido: {}".format(id_user, e.message))

@@ -60,7 +60,7 @@ def processa_all_id_friends_timelines():
             logging.error("User {} - Erro Desconhecido: {}".format(id_user, e.message))
 
     for user_id in all_userid_friends_set:
-        mani.add_lista(all_userid_friends, id_user_timeline)
+        mani.add_lista(all_userid_friends, user_id)
 
     del all_userid_friends_set
 

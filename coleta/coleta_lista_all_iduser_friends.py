@@ -32,7 +32,7 @@ def coleta_all_id_friends_timelines():
 
     all_userid_friends = "{}/all_idusers_friends_v2.csv".format(conf.dir_dados)
 
-    print all_userid_friends
+    print(all_userid_friends)
 
     df_twitter = pd.read_csv(file_keys_twitter)
 

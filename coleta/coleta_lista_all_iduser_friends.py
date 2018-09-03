@@ -63,7 +63,8 @@ def coleta_all_id_friends_timelines():
 
             logging.info("Executando comando")
             # faz a chamada a coleta e enquanto nao coletar a qtd total nao volta para o loop
-            subprocess.call([comando], shell=True)
+            # subprocess.call([comando], shell=True)
+            print comando
             logging.info("Comando finalizado")
 
 

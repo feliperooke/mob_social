@@ -35,7 +35,9 @@ def processa_timeline():
     pasta_pai = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
 
     for user_id in users_coletados:
-        subprocess.call(["cd {};python -m limpeza.processa_timeline_by_iduser {}".format(pasta_pai, user_id)], shell=True)
+
+        if not os.path.isfile("{}/{}.csv".format(dir_cleaned, user_id)):
+            subprocess.call(["cd {};python -m limpeza.processa_timeline_by_iduser {}".format(pasta_pai, user_id)], shell=True)
 
 
 processa_timeline()

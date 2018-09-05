@@ -41,6 +41,7 @@ def coleta_all_id_friends_timelines():
     while (not mani.lista_is_empty(all_userid_friends)):
 
         comando = "cd {} &&".format(pasta_pai)
+        wait = " wait"
 
         for contador in range(0, qt_lines_twitter):
             # pega o primeiro da pilha
@@ -48,11 +49,12 @@ def coleta_all_id_friends_timelines():
 
             # monta comando com ele
             # aqui serao enfileirados varios comandos de coleta por vez
-            comando += "python -m coleta.coleta_timeline_por_iduser {} {} {} {} {}; ".format(df_twitter.iloc[contador].consumer_key,
+            comando += "python -m coleta.coleta_timeline_por_iduser {} {} {} {} {}& ".format(df_twitter.iloc[contador].consumer_key,
                                                                                              df_twitter.iloc[contador].consumer_secret,
                                                                                              df_twitter.iloc[contador].acess_token,
                                                                                              df_twitter.iloc[contador].access_token_secret,
                                                                                              id_user)
+            wait += " %{}".format((contador + 1))
 
             logging.info("Mandando user: {} para a coleta usando a chave numero: {}".format(id_user, contador))
 
@@ -61,10 +63,13 @@ def coleta_all_id_friends_timelines():
 
             logging.info("Apagando o usuario: {} da lista".format(id_user))
 
-            logging.info("Executando comando")
-            # faz a chamada a coleta e enquanto nao coletar a qtd total nao volta para o loop
-            subprocess.call([comando], shell=True)
-            logging.info("Comando finalizado")
+        comando += wait
+        
+        logging.info("Executando comando")
+
+        # faz a chamada a coleta e enquanto nao coletar a qtd total nao volta para o loop
+        subprocess.call([comando], shell=True)
+        logging.info("Comando finalizado")
 
 
 coleta_all_id_friends_timelines()

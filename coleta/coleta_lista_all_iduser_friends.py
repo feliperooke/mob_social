@@ -64,7 +64,9 @@ def coleta_all_id_friends_timelines():
             logging.info("Apagando o usuario: {} da lista".format(id_user))
 
         comando += wait
-        
+
+        logging.info("[COMANDO]: {}".format(comando))
+
         logging.info("Executando comando")
 
         # faz a chamada a coleta e enquanto nao coletar a qtd total nao volta para o loop

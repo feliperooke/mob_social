@@ -88,6 +88,10 @@ def remove_lista(arquivo, linha):
     subprocess.call(["sed -i '/{}/d' {}".format(linha, arquivo)], shell=True)
 
 
+def remove_lista_background(arquivo, linha):
+    subprocess.call(["sed -i '/{}/d' {} &".format(linha, arquivo)], shell=True)
+
+
 def first_line(arquivo_in):
 
     dir_arquivo_in = os.path.abspath(os.path.dirname(arquivo_in))
@@ -107,3 +111,67 @@ def first_line(arquivo_in):
 
 def lista_is_empty(arquivo_in):
     return os.stat(arquivo_in).st_size == 0
+
+
+def divide_lista_metodo_1(arquivo_in, folder_out, divisor):
+
+    dir_arquivo_in = os.path.abspath(os.path.dirname(arquivo_in))
+    if not os.path.exists(dir_arquivo_in):
+        return
+
+    dir_folder_out = os.path.abspath(folder_out)
+    if not os.path.exists(dir_folder_out):
+        return
+
+    arquivos = []
+
+    for i in range(0, divisor):
+        arquivos.append(open("{}/{}.{}".format(dir_folder_out, i, os.path.basename(arquivo_in)), "a"))
+
+    arq_principal = open(arquivo_in, 'r')
+
+    contador = 0
+
+    for line in arq_principal.readlines():
+        # o valor de contador roda entre 0, 1, 2 ... quantidade
+        contador = contador % divisor
+        arquivos[contador].write(line)
+        contador += 1
+
+    arq_principal.close()
+
+    for i in range(0, divisor):
+        arquivos[i].close()
+
+
+def divide_lista_metodo_2(arquivo_in, folder_out, qt_por_arquivo):
+
+    dir_arquivo_in = os.path.abspath(os.path.dirname(arquivo_in))
+    if not os.path.exists(dir_arquivo_in):
+        return
+
+    dir_folder_out = os.path.abspath(folder_out)
+    if not os.path.exists(dir_folder_out):
+        return
+
+    arq_principal = open(arquivo_in, 'r')
+
+    contador = 0
+    num_arquivo = 0
+    arquivo = open("{}/{}.{}".format(dir_folder_out, num_arquivo, os.path.basename(arquivo_in)), "a")
+
+    for line in arq_principal.readlines():
+
+        if contador < qt_por_arquivo:
+            arquivo.write(line)
+            contador += 1
+        else:
+            arquivo.close()
+            num_arquivo += 1
+            contador = 0
+            arquivo = open("{}/{}.{}".format(dir_folder_out, num_arquivo, os.path.basename(arquivo_in)), "a")
+
+    if not arquivo.closed:
+        arquivo.close()
+
+    arq_principal.close()

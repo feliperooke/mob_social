@@ -7,7 +7,6 @@
 # assim que terminar de coletar os amigos, retira da lista de erros
 
 # recebe chaves do twitter
-import sys
 import conf
 import helpers.manipulador_de_listas as mani
 import logging

@@ -17,7 +17,7 @@ import os
 import socket
 
 hostname = socket.gethostname()
-qtd_por_arquivo = sys.argv[1]
+qtd_por_arquivo = int(sys.argv[1])
 
 # inicia configuracoes de logging
 if not os.path.exists(conf.dir_logs):

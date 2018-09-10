@@ -160,6 +160,8 @@ def divide_lista_metodo_2(arquivo_in, folder_out, qt_por_arquivo):
     num_arquivo = 0
     arquivo = open("{}/{}.{}".format(dir_folder_out, num_arquivo, os.path.basename(arquivo_in)), "a")
 
+    print(qt_por_arquivo)
+
     for line in arq_principal.readlines():
 
         if contador < qt_por_arquivo:

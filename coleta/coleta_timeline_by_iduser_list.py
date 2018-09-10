@@ -38,9 +38,15 @@ def coleta_all_id_friends_timelines():
 
     fila = []
 
-    with open(lista_coleta, "r") as ins:
-        for linha in ins:
-            fila.append(linha.rstrip())
+    try:
+        arquivo = open(lista_coleta, "r")
+        for line in arquivo.readlines():
+            fila.append(line.rstrip())
+        arquivo.close()
+    except IOError:
+        logging.error("Erro ao ler arquivo: {}".format(lista_coleta))
+
+    logging.info("Tamanho da Lista: {}".format(len(fila)))
 
     while not (len(fila) == 0):
 

@@ -19,7 +19,7 @@ consumer_secret = sys.argv[2]
 acess_token = sys.argv[3]
 access_token_secret = sys.argv[4]
 lista_coleta = sys.argv[5]
-processos_por_chave = sys.argv[6]
+processos_por_chave = int(sys.argv[6])
 
 
 # inicia configuracoes de logging

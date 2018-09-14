@@ -32,7 +32,7 @@ def processa_timeline():
 
     arquivo = open(file_list_ids, "r")
     for line in arquivo.readlines():
-        users_coletados.add(line.rstrip())
+        users_coletados.append(line.rstrip())
     arquivo.close()
 
     for user_id in users_coletados:

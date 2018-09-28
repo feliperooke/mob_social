@@ -44,3 +44,6 @@ lista_followers_timelines_error = "{}/id_users_timeline_followers_collecteds_err
 
 # Limite defalt de amigos e seguidores coletados por usuario
 limite = "5000"
+
+# Aquivo do filtro locations in a geojson
+lista_filter_locations_in_geojson = "{}/geo_time_location_in_geojson_filtered.csv".format(dir_dados)

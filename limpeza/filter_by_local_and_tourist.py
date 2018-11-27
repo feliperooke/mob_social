@@ -21,7 +21,8 @@ data = None
 with open(estrutura_json) as json_file:
     data = json.load(json_file)
 
-date_format = '%Y-%m-%d %H:%M:%S.%f'
+# date_format = '%Y-%m-%d %H:%M:%S.%f'
+date_format = '%Y-%m-%d %H:%M:%S'
 
 estrutura_local = []
 estrutura_tourist = []
@@ -60,9 +61,9 @@ for user in data:
 
 df = pd.Series((u["max_delta"] for u in data))
 
-x = df.sort_values().values
-y = np.arange(1.0, len(x)+1) / len(x)
-plt.plot(x, y, marker='.', linestyle='none')
+# x = df.sort_values().values
+# y = np.arange(1.0, len(x)+1) / len(x)
+# plt.plot(x, y, marker='.', linestyle='none')
 
 
 print "Encontrados {} turistas.".format(len(estrutura_tourist))

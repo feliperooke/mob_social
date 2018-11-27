@@ -29,20 +29,20 @@ def filter_squares():
     with open(file_geojson) as f:
         js = json.load(f)
 
-    df_locations = pd.read_csv(file_locations, names=["userid", "lat", "lon", "time"])
+    df_locations = pd.read_csv(file_locations, names=["userid", "lon", "lat", "time"])
 
     for _, line_location in df_locations.iterrows():
 
         # construct point based on lon/lat returned by geocoder
-        point = Point(line_location.lat, line_location.lon)
+        point = Point(line_location.lon, line_location.lat)
 
         # check each polygon to see if it contains the point
         for feature in js['features']:
             polygon = shape(feature['geometry'])
             if polygon.contains(point):
                 mani.add_lista(conf.lista_filter_locations_in_geojson, "{},{},{},{}\n".format(line_location.userid,
-                                                                                              line_location.lat,
                                                                                               line_location.lon,
+                                                                                              line_location.lat,
                                                                                               line_location.time))
 
 
@@ -51,19 +51,19 @@ def filter_poligono():
     with open(file_geojson) as f:
         js = json.load(f)
 
-    df_locations = pd.read_csv(file_locations, names=["userid", "lat", "lon", "time"])
+    df_locations = pd.read_csv(file_locations, names=["userid", "lon", "lat", "time"])
 
     polygon = shape(js['geometries'][0])
 
     for _, line_location in df_locations.iterrows():
 
         # construct point based on lon/lat returned by geocoder
-        point = Point(line_location.lat, line_location.lon)
+        point = Point(line_location.lon, line_location.lat)
 
         if polygon.contains(point):
             mani.add_lista(conf.lista_filter_locations_in_geojson, "{},{},{},{}".format(line_location.userid,
-                                                                                        line_location.lat,
                                                                                         line_location.lon,
+                                                                                        line_location.lat,
                                                                                         line_location.time))
 
 

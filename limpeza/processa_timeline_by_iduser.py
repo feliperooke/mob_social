@@ -58,8 +58,8 @@ def processa_timeline():
             #              tweet["coordinates"]["coordinates"][1],
             #              tweet["created_at"]])
 
-            linha = "{},{},{}".format(tweet["coordinates"]["coordinates"][0],
-                                      tweet["coordinates"]["coordinates"][1],
+            linha = "{},{},{}".format(tweet["coordinates"]["coordinates"][1],
+                                      tweet["coordinates"]["coordinates"][0],
                                       tweet["created_at"].replace('"', ''))
 
             # grava arquivo individual

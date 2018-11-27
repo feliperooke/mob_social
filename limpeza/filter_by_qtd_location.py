@@ -9,7 +9,7 @@ quantidade_de_locais_diferentes = int(sys.argv[1])
 geo_time_location_in_geojson_filtered = sys.argv[2]
 saida = sys.argv[3]
 
-df = pd.read_csv(geo_time_location_in_geojson_filtered, names=["userid", "lat", "lon", "time"])
+df = pd.read_csv(geo_time_location_in_geojson_filtered, names=["userid", "lon", "lat", "time"])
 
 # total de tweets coletados
 total_tweets = df.shape[0]

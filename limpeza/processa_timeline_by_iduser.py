@@ -10,7 +10,7 @@ import socket
 import sys
 
 id_user = sys.argv[1]
-num_lista = sys.argv[2]
+# num_lista = sys.argv[2]
 
 hostname = socket.gethostname()
 
@@ -27,7 +27,7 @@ def processa_timeline():
     dir_timeline = "{}/user_timeline".format(conf.dir_dados)
     timeline_file_user = "{}/{}.json.gz".format(dir_timeline, id_user)
     dir_cleaned = "{}/users_timeline_cleaned".format(conf.dir_dados)
-    all_geo_time_location = "{}/all_geo_time_location.csv".format(conf.dir_dados)
+    # all_geo_time_location = "{}/{}_all_geo_time_location.csv".format(num_lista, conf.dir_dados)
     # lock_file = "lock/processa_timeline.lock"
 
     # verifica se existe user coletado
@@ -68,7 +68,7 @@ def processa_timeline():
                 # grava arquivo individual
                 mani.add_lista("{}/{}.csv".format(dir_cleaned, id_user), linha)
                 # grava no arquivao
-                mani.add_lista("{}_{}".format(num_lista, all_geo_time_location), "{},{}".format(id_user, linha))
+                # mani.add_lista("{}".format(all_geo_time_location), "{},{}".format(id_user, linha))
 
 
 processa_timeline()

@@ -3,9 +3,10 @@ import conf
 import subprocess
 import logging
 import os
-from os import walk
+import sys
 import socket
 
+n_lista = int(sys.argv[1])
 hostname = socket.gethostname()
 
 # inicia configuracoes de logging
@@ -18,26 +19,10 @@ logging.basicConfig(filename="{}/processa_timeline.{}.log".format(conf.dir_logs,
 
 def processa_timeline():
 
-    dir_timeline = "{}/user_timeline".format(conf.dir_dados)
-    dir_cleaned = "{}/users_timeline_cleaned".format(conf.dir_dados)
-    # lock_file = "lock/processa_timeline.lock"
-
-    # verifica se existe a pasta, senao cria
-    if not os.path.exists(dir_cleaned):
-        os.makedirs(dir_cleaned)
-
-    # entra na pasta user_timeline e lista todos os arquivos csv
-    _, _, users_coletados = walk(dir_timeline).next()
-
-    # pega apenas os ids
-    users_coletados = map(lambda x: str.replace(x, ".json.gz", ""), users_coletados)
-
     pasta_pai = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
 
-    for user_id in users_coletados:
-
-        if not os.path.isfile("{}/{}.csv".format(dir_cleaned, user_id)):
-            subprocess.call(["cd {};python -m limpeza.processa_timeline_by_iduser {}".format(pasta_pai, user_id)], shell=True)
+    for num in range(0, n_lista):
+        subprocess.call(["cd {} && nohup python -m limpeza.processa_all_timelines_split {} &".format(pasta_pai, num)], shell=True)
 
 
 processa_timeline()

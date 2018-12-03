@@ -52,20 +52,22 @@ def processa_timeline():
 
         # dados = []
 
-        # percorre os tweets extraindo as coordenadas
-        for tweet in data:
-            # dados.append([tweet["coordinates"]["coordinates"][0],
-            #              tweet["coordinates"]["coordinates"][1],
-            #              tweet["created_at"]])
+        # percorre os tweets extraindo as coordenadas,
+        # mas antes verifica se ele ja nao foi processado anteriormente
+        if not os.path.isfile("{}/{}.csv".format(dir_cleaned, id_user)):
+            for tweet in data:
+                # dados.append([tweet["coordinates"]["coordinates"][0],
+                #              tweet["coordinates"]["coordinates"][1],
+                #              tweet["created_at"]])
 
-            linha = "{},{},{}".format(tweet["coordinates"]["coordinates"][1],
-                                      tweet["coordinates"]["coordinates"][0],
-                                      tweet["created_at"].replace('"', ''))
+                linha = "{},{},{}".format(tweet["coordinates"]["coordinates"][1],
+                                          tweet["coordinates"]["coordinates"][0],
+                                          tweet["created_at"].replace('"', ''))
 
-            # grava arquivo individual
-            mani.add_lista("{}/{}.csv".format(dir_cleaned, id_user), linha)
-            # grava no arquivao
-            mani.add_lista("{}".format(all_geo_time_location), "{},{}".format(id_user, linha))
+                # grava arquivo individual
+                mani.add_lista("{}/{}.csv".format(dir_cleaned, id_user), linha)
+                # grava no arquivao
+                mani.add_lista_lock("{}".format(all_geo_time_location), "{},{}".format(id_user, linha))
 
 
 processa_timeline()

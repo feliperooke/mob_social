@@ -68,7 +68,7 @@ def processa_timeline():
                 # grava arquivo individual
                 mani.add_lista("{}/{}.csv".format(dir_cleaned, id_user), linha)
                 # grava no arquivao
-                mani.add_lista("{}_{}".format(all_geo_time_location), "{},{}".format(num_lista, id_user, linha))
+                mani.add_lista("{}_{}".format(num_lista, all_geo_time_location), "{},{}".format(id_user, linha))
 
 
 processa_timeline()
